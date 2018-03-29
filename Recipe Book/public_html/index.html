@@ -1,0 +1,155 @@
+<!--2406 Assignment 2 -->
+<!--Student Name: Roy Xia-->
+<!--Student Number: 101009419-->
+<!--Date of Completion: 31/10/16-->
+<!--Citation: Source code from COMP2406-->
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Cooking Recipes!</title> 
+	<link rel="stylesheet" type="text/css" href="a2.css" />
+</head>
+
+<body>
+	<h1>Cooking Recipes!</h1> <!--header-->
+	
+	<form id = "list">
+    <fieldset id="autoHeight">
+        <legend>Recipe Drop Down List</legend> <!--dropdownlist-->
+        <h2>Recipes</h2>
+        <select name="dropDownMenu" id="dropDownRecipes">
+		<option value=""></option>
+        </select>
+    </fieldset>
+	</form>
+	<button class="button" type="view" onclick=getRecipe()>View</button> <!--buttons-->
+	<button class="button2" type="submit"onclick=postRecipe()>Submit</button>
+	
+	<div>
+	<form id = "labelArea"> <!--random form id-->
+	<fieldset id="Height">
+		<label for="duration">Duration</label> <!--duration label-->
+		<br>
+		<input type="text" name ="Duration" id="D"> <!--duration info-->
+		</br>
+		
+		<label for="ingredients">Ingredients</label> <!--Ingredients-->
+		<br>
+		<!--Ingredients text box size-->
+		<textarea rows="10" cols="100" id="I">
+		</textarea>
+		</br>
+		
+		<label for="steps">Steps</label> <!--Steps-->
+		<br>
+		<textarea rows="10" cols="100" id="S">
+		</textarea>
+		</br>
+		
+		<label for="notes">Notes</label> <!--notes-->
+		<br>
+		<textarea rows="10" cols="100" id="N">
+		</textarea>
+		</br>
+		</fieldset>
+	</form>
+	<div>
+</body>
+
+<script>
+		var select = document.getElementById ("dropDownRecipes");
+		
+		//Name: populateList
+		//function: populates list
+		//inputs:recipes .json objects
+		//output: myObj
+		function populateList()
+		{
+			var xhr=new XMLHttpRequest(); //new xhr
+			xhr.open("GET","/recipes/",true); //get recipes async
+			
+			xhr.addEventListener('load', function() //load
+			{
+				if(xhr.readyState == 4 && xhr.status ===200) //if ready state and status are ok
+				{
+					myObj= JSON.parse(xhr.responseText.replace(/_/g, " ")); //parse _ with space
+					for (i in myObj.fileList) //for each 1 in myobj
+						{
+							select.add(new Option(myObj.fileList[i].replace(".json", ""))); // replace json with space format
+						}
+				}
+			});	
+			xhr.send(); //send
+		}
+		
+	populateList();
+	
+	//Name: getRecipe
+	//function: get recipe 
+	//input: .json file requested
+	//output: text
+	function getRecipe() 
+	{
+			var selectR = select.selectedIndex;
+			if (selectR === 0) {
+			return;
+			}
+			
+			else 
+			{
+				var UrlOfRecipe = "/recipes/";  //elements
+				var TempElement = document.getElementById("dropDownRecipes").options[selectR].text.replace(/ /g,"_");
+				UrlOfRecipe += TempElement + ".json";
+				var xhrGetRecipe=new XMLHttpRequest();
+				xhrGetRecipe.open("GET",UrlOfRecipe,true); //get xhr
+				
+				xhrGetRecipe.addEventListener('load', function() //load
+				{
+						//set text box id with xhr get response.text
+						var recipeInfo = JSON.parse(xhrGetRecipe.responseText); //parse get response.text
+						document.getElementById("D").value = recipeInfo.duration;
+						document.getElementById("I").value = recipeInfo.ingredients.join("\n");
+						document.getElementById("S").value = recipeInfo.directions.join("\n");
+						document.getElementById("N").value = recipeInfo.notes;
+				});
+			}
+			xhrGetRecipe.send();	
+	}
+	
+		//Name: postRecipe
+		//function: returns all values of text boxes
+		//input:text from text boxes 
+		//output:myObj
+		function postRecipe() 
+		{
+			var selectR = select.selectedIndex;
+			var newObj ={};
+			
+			if (selectR === 0) 
+			{
+			return;
+			}
+			
+			else 
+			{
+				var UrlOfRecipe = "/recipes/";
+				var TempElement = document.getElementById("dropDownRecipes").options[selectR].text.replace(/ /g,"_");
+				UrlOfRecipe += TempElement + ".json";
+				var xhrPostRecipe=new XMLHttpRequest();
+				xhrPostRecipe.open("POST",UrlOfRecipe,true);
+			
+			//set obj with text box
+						newObj.duration=document.getElementById("D").value;
+						newObj.ingredients=document.getElementById("I").value;
+						newObj.directions=document.getElementById("S").value;
+						newObj.notes=document.getElementById("N").value;
+			}
+			xhrPostRecipe.send(JSON.stringify(newObj)); //return send obj
+		}
+</script>
+
+</html>
+

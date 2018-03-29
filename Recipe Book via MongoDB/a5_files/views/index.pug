@@ -1,0 +1,55 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Cooking Recipes!
+    link(rel='stylesheet', type='text/css', href='a5.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='recipePage.js')
+  body
+    h1 Cooking Recipes!
+    form#list
+      fieldset#autoHeight
+        legend Recipe Drop Down List
+        h2 Recipes
+        |  
+        select#recipeSelect.dropbtn(name='dropDownMenu')
+          option.dropdown-content
+    |  
+    button#recipeViewButton.buttonsView(type='view') View
+    |  
+    button#recipeSubmitButton.buttonsSubmit(type='view') Submit
+    div
+      form#labelArea
+        fieldset#Height
+          label(for='name') Name
+          br
+          |  
+          input#recipeName(type='text', name='Name')
+          br
+          |  
+          label(for='duration') Duration
+          br
+          |  
+          input#recipeDuration(type='text', name='Duration')
+          br
+          |  
+          label(for='ingredients') Ingredients
+          br
+          |  
+          textarea#recipeIngredients(rows='10', cols='100')
+          br
+          |  
+          label(for='steps') Steps
+          br
+          |  
+          textarea#recipeDirections(rows='10', cols='100')
+          br
+          |  
+          label(for='notes') Notes
+          br
+          |  
+          textarea#recipeNotes(rows='10', cols='100')
+          br
+          img.tick#confirmed(src='tick.png')
+      div

@@ -1,0 +1,30 @@
+/*
+2406 Assignment 5
+Student Name: Roy Xia
+Student Number: 101009419
+Date of Completion: 16/12/09
+*/
+
+/*css style file with 3 background both buttons*/
+/*body*/
+body{ 
+	background-color:gray;
+}
+/*header 1*/
+h1{
+	color:black;
+}
+/* button 1 */
+.button{
+	background-color:purple;
+	color: black;
+	padding: 12px;
+	font-size:18;
+}
+/* button 2 */
+.button2{
+	background-color:green;
+	color:black;
+	padding: 12px;
+	font-size:18;
+}

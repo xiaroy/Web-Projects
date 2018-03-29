@@ -1,0 +1,30 @@
+		#inputText, #chatLog{
+			border: solid 1px black;
+			width: 100%;
+			color: black
+			background color: gray
+		}		
+		#chatLog{
+			height: 200px;
+			color: black
+			background color: gray
+		}
+		#contentsDiv{
+		width: 100%;
+		height: 200px;
+		color: black
+			background color: pink
+		}
+		#chatLogDiv{
+		width: 80%;
+		height: 100%;
+		float: left;
+		color: black
+			background color: yellow
+		}
+		#userListDiv{
+		height: 100%;
+		overflow: scroll;
+		color: black
+		background color: blue
+		}

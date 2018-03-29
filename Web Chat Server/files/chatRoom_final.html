@@ -1,0 +1,128 @@
+<!--2406 Assignment 4-->
+<!--Student Name: Roy Xia-->
+<!--Student Number: 101009419-->
+<!--Date of Completion: 11/23/16-->
+
+<!doctype html>
+<html>
+<head>
+	<meta charset = "utf8"/>
+	<title>Socket.IO template</title>
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<style>
+		#inputText, #chatLog{
+			border: solid 1px black;
+			width: 100%;
+		}		
+		#chatLog{
+			height: 200px;
+		}
+		#contentsDiv{
+		width: 100%;
+		height: 200px;
+		}
+		#chatLogDiv{
+		width: 80%;
+		height: 100%;
+		float: left;
+		}
+		#userListDiv{
+		height: 100%;
+		overflow: scroll;
+		}
+	</style>
+	<script>
+		
+		$(document).ready(function()
+		{
+			userName=prompt("What's your name?")||"User";
+			
+			var socket = io(); //connect to the server that sent this page
+			socket.on('connect', function(){
+				socket.emit("intro", userName);
+			});
+			
+			$('#inputText').keypress(function(ev){
+					if(ev.which===13){
+						//send message
+						socket.emit("message",$(this).val());
+						ev.preventDefault(); //if any
+						$("#chatLog").append((new Date()).toLocaleTimeString()+", "+userName+": "+$(this).val()+"\n")
+						$(this).val(""); //empty the input
+					}
+			});
+			
+			//clickhandler function
+			var dbHandler = function() 
+			{
+					var privMsg = prompt("msg");
+					var senduser=$(this).html();				
+					socket.emit("private",{"userName":senduser, "message":privMsg});
+					console.log("db handler");
+					console.log("send user:" + senduser);
+			};
+					
+			socket.on("message",function(data){
+				$("#chatLog").append(data+"\n");
+				$('#chatLog')[0].scrollTop=$('#chatLog')[0].scrollHeight; //scroll to the bottom
+			});
+			
+			socket.on("userList", function(data)
+			{
+				console.log(data.clients);
+				$("#userList").empty();
+				for(var i=0; i<data.clients.length;i++)
+				{
+				$("#userList").append("<li>"+data.clients[i]+"</li>"); //grab the element
+				$("#userList li:nth-child(" + i + ")").dblclick(dbHandler);
+				//line previous
+				}
+				$("#userList li:nth-child(" + i + ")").dblclick(dbHandler);
+			});
+			
+			socket.on("private", function(data) //private msg prompt return
+			{
+				var privMsg2 = prompt(data.userName+ ":" + data.message);				
+				if(privMsg2!=null)
+				{
+				socket.emit("private",{"userName":userName, "message":privMsg2});
+				}
+			});
+			
+			var controlkeyCTRL = false; //check click ctrl
+			$(document).on('keyup keydown', function(e) {
+			  controlkeyCTRL = e.ctrlKey;
+			});
+
+			$(document).on('click','#userList li', function() { // control with something else
+  				if (controlkeyCTRL && $(this).text() !== userName) 
+				{
+    				// control-click
+    				var message = confirm("The user is being blocked " + $(this).text());
+  				}
+			});
+			
+		});			
+		
+	</script>
+</head>
+<body>
+
+<div id="contents">
+
+	<div id="chatLogDiv">
+		<textarea id="chatLog"></textarea>
+	</div>
+	
+	<div id="userListDiv">
+		<ul id="userList">
+		
+		</ul>
+	</div>
+		<input id="inputText">	
+</div>
+
+</body>
+</html>

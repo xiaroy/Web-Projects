@@ -1,0 +1,50 @@
+/*
+//2406 Assignment 3
+//Student Name: Roy Xia
+//Student Number: 101009419
+//Date of Completion: 11/12/16
+//Citation: Tutorial 3
+*/
+
+/*
+body style
+*/
+body{
+	color:white;
+	background-color:black;
+}
+/*
+tile flipped down style
+*/
+div.tile{
+	box-shadow:2px 2px purple;
+	background-color: blue;
+	border:4px solid white;
+	border-radius:10px;
+	padding:10px;
+	width:50px;
+	height:50px;
+	vertical-align:top;
+	display:inline-block;
+	margin:5px;
+}
+
+/*
+tile flipped up style
+*/
+div.tileFlipped{
+	font-size: 14;
+	color:black;
+	box-shadow:2px 2px purple;
+	background-color: white;
+	border:4px solid white;
+	border-radius:10px;
+	padding:10px;
+	width:50px;
+	height:50px;
+	vertical-align:top;
+	display:inline-block;
+	margin:5px;
+}
+
+
